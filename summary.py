@@ -1,18 +1,19 @@
-from openai import OpenAI
+import openai
 import streamlit as st
 
-
 def generate_summary_from_tickets(tickets):
-    client = OpenAI(api_key=st.secrets['OPENAI_KEY'])
+    client = openai.OpenAI(api_key=st.secrets["OPENAI_KEY"])
 
-    # Format ticket info into a prompt
     formatted = []
     for t in tickets:
         fields = t.get("fields", {})
         key = t.get("key", "UNKNOWN")
         date = fields.get("updated", "")[:10]
         status = fields.get("status", {}).get("name", "Unknown")
-        assignee = fields.get("assignee", {}).get("displayName", "Unassigned")
+
+        assignee_obj = fields.get("assignee")
+        assignee = assignee_obj.get("displayName") if assignee_obj else "Unassigned"
+
         summary = fields.get("summary", "No summary")
         description = fields.get("description", "")
 
@@ -29,7 +30,6 @@ def generate_summary_from_tickets(tickets):
         f"{ticket_log}"
     )
 
-    # Call OpenAI API
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
