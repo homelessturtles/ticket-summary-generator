@@ -56,7 +56,7 @@ if st.button("🚀 Generate Summary"):
 # Output Panel Placeholder
 st.markdown("---")
 st.markdown("### ✍️ Summary")
-st.write("GPT-generated summary will appear here.")
+st.write("Tickets summary will appear here.")
 
 # Footer
 st.markdown("---")
