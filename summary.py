@@ -1,6 +1,7 @@
 import openai
 import streamlit as st
 
+
 def generate_summary_from_tickets(tickets):
     client = openai.OpenAI(api_key=st.secrets["OPENAI_KEY"])
 
@@ -12,7 +13,8 @@ def generate_summary_from_tickets(tickets):
         status = fields.get("status", {}).get("name", "Unknown")
 
         assignee_obj = fields.get("assignee")
-        assignee = assignee_obj.get("displayName") if assignee_obj else "Unassigned"
+        assignee = assignee_obj.get(
+            "displayName") if assignee_obj else "Unassigned"
 
         summary = fields.get("summary", "No summary")
         description = fields.get("description", "")
@@ -24,9 +26,16 @@ def generate_summary_from_tickets(tickets):
     ticket_log = "\n".join(formatted)
 
     prompt = (
-        "You're a product operations assistant. Summarize the following Jira tickets "
-        "into a clean weekly update for stakeholders. Group by theme if possible. "
-        "Be concise and use a professional tone:\n\n"
+        "You're a product operations assistant helping a product team stay informed.\n"
+        "Write a clean, professional weekly summary of Jira tickets grouped by theme.\n\n"
+        "For each ticket, include:\n"
+        "- Key updates (what changed)\n"
+        "- Status (In Progress, Blocked, etc.)\n"
+        "- Who it's assigned to (if available)\n"
+        "- Any risks, blockers, or delays\n\n"
+        "Summarize in a way that's useful for product managers and cross-functional stakeholders.\n"
+        "Format the output using bullet points under each theme. Be brief but informative.\n\n"
+        "Here are the tickets:\n\n"
         f"{ticket_log}"
     )
 
