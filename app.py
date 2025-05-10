@@ -17,6 +17,7 @@ jira_url = st.sidebar.text_input(
 api_token = st.sidebar.text_input("API Token", type="password")
 email = st.sidebar.text_input("Jira Account Email")
 project_key = st.sidebar.text_input("Project Key", placeholder="e.g. PROJ")
+verbose = st.sidebar.checkbox("Show API Debug Logs")
 
 # Date range (defaults to last 7 days)
 default_end = datetime.today()
@@ -37,7 +38,8 @@ if st.button("🚀 Generate Summary"):
                     api_token=api_token,
                     project_key=project_key,
                     start_date=start_date.strftime("%Y-%m-%d"),
-                    end_date=end_date.strftime("%Y-%m-%d")
+                    end_date=end_date.strftime("%Y-%m-%d"),
+                    verbose=verbose
                 )
 
             if not tickets:
@@ -49,7 +51,7 @@ if st.button("🚀 Generate Summary"):
                 st.markdown(summary)
 
         except Exception as e:
-            st.error(f"Error: {e}")
+            st.exception(e)
 
 # Output Panel Placeholder
 st.markdown("---")
