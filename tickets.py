@@ -1,7 +1,6 @@
 import requests
 import base64
 import streamlit as st
-import base64
 
 
 def fetch_jira_tickets(jira_url, email, api_token, project_key, start_date, end_date, verbose=False):

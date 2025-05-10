@@ -1,16 +1,25 @@
 from openai import OpenAI
 import streamlit as st
 
+
 def generate_summary_from_tickets(tickets):
     client = OpenAI(api_key=st.secrets['OPENAI_KEY'])
 
     # Format ticket info into a prompt
     formatted = []
     for t in tickets:
-        date = t["updated"][:10]
+        fields = t.get("fields", {})
+        key = t.get("key", "UNKNOWN")
+        date = fields.get("updated", "")[:10]
+        status = fields.get("status", {}).get("name", "Unknown")
+        assignee = fields.get("assignee", {}).get("displayName", "Unassigned")
+        summary = fields.get("summary", "No summary")
+        description = fields.get("description", "")
+
         formatted.append(
-            f"- [{date}] {t['key']} ({t['status']}) — {t['assignee']}: {t['summary']} — {t['description']}"
+            f"- [{date}] {key} ({status}) — {assignee}: {summary} — {description}"
         )
+
     ticket_log = "\n".join(formatted)
 
     prompt = (
