@@ -39,7 +39,7 @@ if st.button("🚀 Generate Summary"):
                     project_key=project_key,
                     start_date=start_date.strftime("%Y-%m-%d"),
                     end_date=end_date.strftime("%Y-%m-%d"),
-                    verbose=verbose
+                    #verbose=verbose
                 )
 
             if not tickets:
